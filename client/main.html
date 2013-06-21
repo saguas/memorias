@@ -1,0 +1,104 @@
+<head> 
+	<title>Memórias</title>
+	<link rel="canonical" href="http://www.example.com" />
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=silencing"></script>
+<meta property="og:url" content="http://www.chapman-freeborn.com/en/blog/" />
+<meta property="og:title" content="AddThis Tour" /> 
+<meta property="og:description" content="Watch the AddThis Tour video." />  
+<meta property="og:image" content="http://i2.ytimg.com/vi/1F7DKyFt5pY/default.jpg" /> 
+<meta property="og:video" content="http://www.youtube.com/v/1F7DKyFt5pY&fs=1" /> 
+<meta property="og:video:height" content="340" />  
+<meta property="og:video:width" content="560" />  
+</head> 
+<body>	
+        
+</body>
+
+
+<template name="layout">
+  <div class="page-container">
+    <div class="container">
+      <h1>Memórias</h1>
+
+      <div class="page">
+        {{{yield}}}
+      </div>
+      {{> footerLayout}}
+    </div>
+  </div>
+</template>
+
+<template name="loggedInLayout">
+  <div class="page-container authorized">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Memórias</a>
+        <ul class="nav">
+          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
+          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
+          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
+          <li><a href="/boguspath">Bogus Path</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="containers">
+            <div class="slidedown">
+              <div class="nome">
+                <strong class="texto">Meu nome é: luis &nbsp;&nbsp;</strong>
+                <button id="btnpaineltop" class ="btn btn-primary btn-small"><strong>twitter</strong></button>
+                <button class="close">&times;</button>
+              </div>
+            </div>
+        </div>
+        
+    <div class="container">
+      <div class="page">
+        {{{yield}}}
+      </div>
+        {{> footerLayout}}
+    </div>
+  </div>
+</template>
+
+<Template name="footerLayout">   
+    <footer class="footer">
+    
+        <p>Manutenção e Desenvolvimento a cargo de <a href="http://twitter.com/mdo" target="_blank">Luís Fernandes</a> e <a href="http://twitter.com/fat" target="_blank">Helena Faustino</a>.</p>
+        <p>Código ao abrigo de <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, Documentação ao abrigo de <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <p><a href="http://glyphicons.com">Glyphicons Free</a> Licenciado ao abrigo de <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+        <ul class="footer-links">
+          <li><a href="mailto:luisfmfernandes@gmail.com">Email</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="https://github.com/twitter/bootstrap/issues?state=open">Facebook</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="https://github.com/twitter/bootstrap/blob/master/CHANGELOG.md">Twitter</a></li>
+        </ul>
+      <div id="fb-root"></div>
+     </footer>   
+</Template>
+
+<template name="unauthorized">
+  <div class="alert alert-error alert-block">
+    <h2>401 - Unauthorized</h2>
+    <h4>Sorry, you're not authorized to see the secret!</h4>
+    <p>
+      Try again after opening your debug console and typing
+      Session.set("secret", true)
+    </p>
+  </div>
+</template>
+
+<template name="notFound">
+  <div class="alert alert-error alert-block">
+    <h2>404 - Not found</h2>
+    <h4>Sorry, couldn't find that page :-( {{pagePath}}</h4>
+    <p>
+      <a href="{{rootPath}}">Início</a>
+    </p>
+  </div>
+</template>
+
+
+
+
+

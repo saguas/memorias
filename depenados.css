@@ -1,0 +1,202 @@
+/* CSS declarations go here */
+/*
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}*/
+
+body {
+        overflow: scroll;
+        margin: 0;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Helvetica;
+    }
+
+    #chart, #header, #footer {
+        position: absolute;
+        top: 0;
+    }
+
+    #header, #footer {
+        z-index: 1;
+        display: block;
+        font-size: 36px;
+        font-weight: 300;
+        text-shadow: 0 1px 0 #fff;
+    }
+
+    #header.inverted, #footer.inverted {
+        color: #fff;
+        text-shadow: 0 1px 4px #000;
+    }
+
+    #header {
+        top: 80px;
+        left: 140px;
+        width: 1200px;
+    }
+
+    #footer {
+        top: 680px;
+        right: 140px;
+        text-align: right;
+    }
+
+    rect {
+        pointer-events: all;
+        cursor: pointer;
+    }
+
+    .chart {
+        display: block;
+        margin: auto;
+        margin-top: 40px;
+    }
+
+    .label {
+        stroke: #000000;
+        fill: #000000;
+        stroke-width: 0;
+        padding: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .parent .label {
+        font-size: 12px;
+        stroke: #FFFFFF;
+        fill: #FFFFFF;
+    }
+
+    .child .label {
+        font-size: 11px;
+    }
+
+    .cell {
+        font-size: 11px;
+        cursor: pointer
+    }
+
+    .myCarousel{
+        border-style: none;
+    }
+
+    #myTabContent {
+
+        /*height: 500px !important;
+        overflow-y: scroll;
+        */
+    }
+
+
+    #myCarousel{
+        width: 700px;
+        max-height: 400px;
+        overflow:hidden;
+
+    }
+    
+    .featurette-divider {
+      margin: 80px 0 0 0; /* Space out the Bootstrap <hr> more */
+    }
+
+    .addthis_bar_container {
+        /*background-color: white*/
+    }
+
+    .containers {
+        display: none;
+        background-color: #000000;
+        height: 50px;
+        width: 100%;
+        color: #FFFFFF;
+        z-index: 9999;
+        margin: 0;
+        top:0;
+        opacity:0.7;
+        position: fixed;
+        
+        
+    }
+
+ .containerss {
+        display: "";
+        background-color: #000000;
+        height: 50px;
+        width: 100%;
+        color: #FFFFFF;
+        position: absolute;
+        z-index: 9999;
+        top:0;
+        /*opacity:0.85;*/
+        
+    }
+
+    div .nome {
+        position: relative;
+        margin:auto;
+        margin-top: 10px;
+        
+        /*margin-left:auto;
+        margin-right:auto;*/
+        text-align:center;
+    }
+
+    .close {
+        margin-right: 30px;
+        color: inherit;
+    }
+
+    .hero-unit.myfotoboard{
+
+        margin-bottom:10px;
+        padding-bottom:30px;
+    }
+
+
+
+
+/* Footer
+-------------------------------------------------- */
+
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 70px;
+  border-top: 1px solid #e5e5e5;
+  background-color: #f5f5f5;
+}
+.footer p {
+  margin-bottom: 0;
+  color: #777;
+}
+.footer-links {
+  margin: 10px 0;
+}
+.footer-links li {
+  display: inline;
+  padding: 0 2px;
+}
+.footer-links li:first-child {
+  padding-left: 0;
+}
+
+#iconfacebook {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  *margin-right: .3em;
+  line-height: 16px;
+  vertical-align: text-top;
+  background-image: url("facebook-2.png");
+  background-repeat: no-repeat;
+  margin-top: 1px;
+}
+
+
+
+
