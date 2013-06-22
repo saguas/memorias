@@ -184,26 +184,40 @@ Template.loggedInLayout.events({
     
 });
 
-Template.mediaSub.rendered = function(){
-    
+Template.mediaNews.rendered = function(){
+        
+    var htmlModal = Meteor.render(function () {
+        //console.log("dentro de render ");
+        return Template.modalNews(Session.get("modal"));    
+    });
+        
+    if($("#myModal").length == 0)
+        $("#myTabContent").append(htmlModal);  
+        
+        $('#myModal').on('hidden', function () {
+          // do something…
+           //console.log("inside modal hidden event ", this);
+           //$(this).remove();
+        });
 };
+
+Template.mediaNews.destroyed = function(){
+   
+}
 
 Template.mediaSub.events({
    'click a[href="#myModal"]' : function(event, tmpl){
        var id = $(event.target).attr("ids");
        console.log("click myModal %o id: %s", new Meteor.Collection.ObjectID(id), id);
-       var htmlModal = Template.modalNews(Posts.findOne({_id:(new Meteor.Collection.ObjectID(id))}));
-       console.log("htmlModal ", htmlModal);
+       //var htmlModal = Template.modalNews(Posts.findOne({_id:(new Meteor.Collection.ObjectID(id))}));
+       //console.log("htmlModal ", htmlModal);
+       Session.set("modal",Posts.findOne({_id:(new Meteor.Collection.ObjectID(id))}));
        //$(event.target).append(htmlModal);
        //$(event.target).parents('div:eq(0)').append(htmlModal);  
        
-       $("#myTabContent").append(htmlModal);  
+       //$("#myTabContent").append(htmlModal);  
        
-       $('#myModal').on('hidden', function () {
-          // do something…
-           console.log("inside modal hidden event ", this);
-           $(this).remove();
-       });
+       
        //event.preventDefault();
    }
 });
@@ -312,6 +326,7 @@ Template.newsboard.rendered = function(){
         //console.log("addthis bar ", addthis.bar);
         //$('.containers').prependTo("body");
     if(!self.handle){
+            //console.log("newsboard handle ");
             self.handle = Deps.autorun(function (c) {
                 
                 if(Session.equals("from","facebook")){
