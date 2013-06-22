@@ -1,5 +1,6 @@
 var addthis_config;
 var addthis_config = {"data_track_addressbar":true};
+var barTimeout;
 
 Meteor.startup(function() {
     console.log("Mini Page router started");   
@@ -90,7 +91,7 @@ function isAuthorized (obj,page) {
       this.layout('loggedInLayout');
     else
         this.layout('layout');
-
+      
   }
 
   function authorizeSecret (context, page) {
@@ -154,9 +155,42 @@ Template.searchBox.helpers({
 
 Template.loggedInLayout.events({
         'click .close': function(event, tmpl) {
-            $(".containers").slideUp({duration:"slow", easing:"swing"});
+            $(".containers").slideUp(function(){
+                //$(".btnSocial").slideDown('slow'); 
+                $(".btnSocial").show('slow'); 
+           });
+            
+            Meteor.clearTimeout(barTimeout);
+        },
+    
+        'click .vertButton': function(event, tmpl) {
+            $(".btnSocial").hide('fast',function(){
+               
+                $(".containers").slideDown('slow', function(){
+                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5); 
+                 });
+                
+           });
+            
+        },
+    
+        'mouseenter .containers': function(event, tmpl) {
+            
+            Meteor.clearTimeout(barTimeout);
+        },
+    
+        'mouseleave .containers': function(event, tmpl) {
+            
+            barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
         }
+    
 });
+
+Template.loggedInLayout.rendered = function(){
+    //$(".btnSocial").hide();
+    //$(".btnSocial").slideUp();
+    
+}
 
 Template.searchBox.events({
     
@@ -227,8 +261,10 @@ Template.tablesNews.rendered = function () {
             if($(e.target).attr("href") !== "#home"){
                 Session.set("displaySearch", false);
                 //$(".slidedown").slideUp();
+                 
             }else{
                 Session.set("displaySearch", true);
+                
                // $(".containers").slideDown();
             }
                 //Session.set("displayMedia","none");
@@ -246,30 +282,35 @@ Template.tablesNews.destroyed = function () {
 
 Template.newsboard.rendered = function(){
 
-        var self = this;
+    var self = this;
         //addthis.bar.hide();
         //addThisBar();
         //console.log("addthis bar ", addthis.bar);
         //$('.containers').prependTo("body");
-        self.handle = Deps.autorun(function (c) {
-            
-            if(Session.equals("from","facebook")){
-                $(".containers").slideDown();                   
-                c.stop();
-                Meteor.setInterval(stopTopBar,1000*5);
-            }else if(Session.equals("from","twitter")){
-                $(".containers").slideDown();   
-                c.stop();
-                Meteor.setInterval(stopTopBar,1000*5);
-            }else if(Session.equals("from","googleplus")){
-                $(".containers").slideDown();   
-                c.stop();
-                Meteor.setInterval(stopTopBar,1000*5);
-            }
-            
-            
-        });
-            
+    if(!self.handle){
+            self.handle = Deps.autorun(function (c) {
+                
+                if(Session.equals("from","facebook")){
+                    $(".containers").slideDown();   
+                   // $(".btnSocial").slideUp(); 
+                    c.stop();
+                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+                }else if(Session.equals("from","twitter")){
+                    $(".containers").slideDown();   
+                    //$(".btnSocial").slideUp(); 
+                    c.stop();
+                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+                }else if(Session.equals("from","googleplus")){
+                    $(".containers").slideDown();   
+                    //$(".btnSocial").slideUp(); 
+                    c.stop();
+                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+                }
+                
+                
+            });   
+        }
+    
         if (document.referrer && document.referrer != "")
             console.log('Thanks for visiting this site from ' + document.referrer);
     
@@ -342,7 +383,13 @@ function getObjId(obj){
 
 function stopTopBar(){
 
-    $(".containers").slideUp();
+    $(".containers").slideUp(function(){
+        //$(".btnSocial").slideDown("slow");   
+        $(".btnSocial").show();
+   });
+    //$(".btnSocial").slideDown(); 
+    console.log(".btnSocial", $(".btnSocial"));
+    
     
 }
 
