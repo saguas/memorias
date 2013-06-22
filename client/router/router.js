@@ -8,8 +8,6 @@ Meteor.startup(function() {
     addthis_share = {"data_track_addressbar":true}
 });
 
-var postsData = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
-
 
 Handlebars.registerHelper("navClassFor", function (nav, options) {
     return Meteor.router.navEquals(nav) ? "active" : "";
@@ -175,16 +173,41 @@ Template.loggedInLayout.events({
         },
     
         'mouseenter .containers': function(event, tmpl) {
-            
+            console.log("mouseenter ");
             Meteor.clearTimeout(barTimeout);
         },
     
         'mouseleave .containers': function(event, tmpl) {
-            
+            console.log("mouseleave ");
             barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
         }
     
 });
+
+Template.mediaSub.rendered = function(){
+    
+};
+
+Template.mediaSub.events({
+   'click a[href="#myModal"]' : function(event, tmpl){
+       var id = $(event.target).attr("ids");
+       console.log("click myModal %o id: %s", new Meteor.Collection.ObjectID(id), id);
+       var htmlModal = Template.modalNews(Posts.findOne({_id:(new Meteor.Collection.ObjectID(id))}));
+       console.log("htmlModal ", htmlModal);
+       //$(event.target).append(htmlModal);
+       //$(event.target).parents('div:eq(0)').append(htmlModal);  
+       
+       $("#myTabContent").append(htmlModal);  
+       
+       $('#myModal').on('hidden', function () {
+          // do something…
+           console.log("inside modal hidden event ", this);
+           $(this).remove();
+       });
+       //event.preventDefault();
+   }
+});
+    
 
 Template.loggedInLayout.rendered = function(){
     //$(".btnSocial").hide();
@@ -282,7 +305,8 @@ Template.tablesNews.destroyed = function () {
 
 Template.newsboard.rendered = function(){
 
-    var self = this;
+    var self = this
+    
         //addthis.bar.hide();
         //addThisBar();
         //console.log("addthis bar ", addthis.bar);

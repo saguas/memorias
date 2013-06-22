@@ -180,7 +180,7 @@
           </a>
           <div class="media-body">
             <h4 class="media-heading">{{artigoTitulo}}</h4>
-            {{artigoBody}}
+            {{artigoBody}}.... <a data-toggle="modal" href="#myModal" class="" ids="{{_id._str}}">ver mais</a>
               <p></p>
             {{> votacoes}}
          </div>
@@ -206,6 +206,33 @@
         </button>
 </template>
 
+<template name="modalNews">
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3 id="myModalLabel">{{artigoTitulo}}</h3>
+            </div>
+            <div class="modal-body">
+              <h4>Text in a modal</h4>
+              <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem.</p>
+
+              <h4>Popover in a modal</h4>
+              <p>This <a href="#" role="button" class="btn popover-test" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">button</a> should trigger a popover on click.</p>
+
+              <h4>Tooltips in a modal</h4>
+              <p><a href="#" class="tooltip-test" title="Tooltip">This link</a> and <a href="#" class="tooltip-test" title="Tooltip">that link</a> should have tooltips on hover.</p>
+
+              <hr>
+
+              <h4>{{artigoTitulo}}</h4>
+              <p>{{artigoBody}}</p>
+            </div>
+            <div class="modal-footer">
+              <button id="closeModal" class="btn" data-dismiss="modal">Close</button>
+              <button class="btn btn-primary">Save changes</button>
+            </div>
+    </div>
+</template>
 
 
 
