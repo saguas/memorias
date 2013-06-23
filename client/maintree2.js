@@ -155,7 +155,7 @@ Template.loggedInLayout.events({
   });
 
 Template.votacoes.events({
-    'click #btnfacebook': function(event) {
+    'click #btnfacebooks': function(event) {
 
     		//Facebook Feed
     		   		

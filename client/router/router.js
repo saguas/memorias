@@ -1,11 +1,14 @@
 var addthis_config;
 var addthis_config = {"data_track_addressbar":true};
 var barTimeout;
+var addthis_share = {"data_track_addressbar":true, email_template:"memorias",
+                        email_vars: { descricao: "A customized value" , note:"Minhas notas"}
+                    };
 
 Meteor.startup(function() {
     console.log("Mini Page router started");   
     Session.set("displayMedia","");
-    addthis_share = {"data_track_addressbar":true}
+    
 });
 
 
@@ -317,16 +320,42 @@ Template.tablesNews.destroyed = function () {
   //this.handle && this.handle.stop();
 }    
 
+Template.carouselNews.rendered = function(){
+
+    //toggleFullScreen($(".myfotoboard"));
+}
+
+Template.carouselNews.events({
+    'click #myCarousel':function(){
+     
+           toggleFullScreen($(this));
+        /*
+        var
+          //el = document.documentElement
+            el = $(this)
+            , rfs =
+                   el.requestFullScreen
+                || el.webkitRequestFullScreen
+                || el.mozRequestFullScreen
+        ;
+        rfs.call(el);
+        */
+ }
+});
+
+
 Template.newsboard.rendered = function(){
 
     var self = this
     
+        
         //addthis.bar.hide();
         //addThisBar();
         //console.log("addthis bar ", addthis.bar);
         //$('.containers').prependTo("body");
     if(!self.handle){
             //console.log("newsboard handle ");
+            
             self.handle = Deps.autorun(function (c) {
                 
                 if(Session.equals("from","facebook")){
@@ -366,6 +395,26 @@ Template.newsboard.destroyed = function () {
   //this.bar;
   this.handle && this.handle.stop();
 }
+
+Template.newsboard.events({
+    
+    'click #myCarousel':function(){
+     
+           toggleFullScreen($("#myCarousel")[0]);
+        /*
+        var
+          //el = document.documentElement
+            el = $(this)
+            , rfs =
+                   el.requestFullScreen
+                || el.webkitRequestFullScreen
+                || el.mozRequestFullScreen
+        ;
+        rfs.call(el);
+        */
+ }
+     
+});
 
 
 Template.footerLayout.rendered = function () {    
@@ -484,4 +533,58 @@ function addThisBar(){
             }
         ]});
 
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.keyCode == 13) {
+    toggleFullScreen(document);
+  }
+}, false);
+
+
+function documentToggleFullScreen(elem) {
+  if (!elem.fullscreenElement &&    // alternative standard method
+      !elem.mozFullScreenElement && !elem.webkitFullscreenElement) {  // current working methods
+    if (elem.documentElement.requestFullscreen) {
+      elem.documentElement.requestFullscreen();
+    } else if (elem.documentElement.mozRequestFullScreen) {
+      elem.documentElement.mozRequestFullScreen();
+    } else if (elem.documentElement.webkitRequestFullscreen) {
+      elem.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (elem.cancelFullScreen) {
+      elem.cancelFullScreen();
+    } else if (elem.mozCancelFullScreen) {
+      elem.mozCancelFullScreen();
+    } else if (elem.webkitCancelFullScreen) {
+      elem.webkitCancelFullScreen();
+    }
+  }
+}
+
+function toggleFullScreen(elem) {
+  if (!elem.fullscreenElement &&    // alternative standard method
+      !elem.mozFullScreenElement && !elem.webkitFullscreenElement) {  // current working methods
+      console.log("start fullscreeen!!! ", elem);
+    if (elem.requestFullscreen) {
+        console.log("elem start fullscreeen!!!");
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        console.log("mopzilla start fullscreeen!!!");
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        console.log("webkit start fullscreeen!!!");
+      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    console.log("canceling fullscreeen!!!");
+    if (elem.cancelFullScreen) {
+      elem.cancelFullScreen();
+    } else if (elem.mozCancelFullScreen) {
+      elem.mozCancelFullScreen();
+    } else if (elem.webkitCancelFullScreen) {
+      elem.webkitCancelFullScreen();
+    }
+  }
 }

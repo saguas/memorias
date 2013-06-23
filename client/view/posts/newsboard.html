@@ -29,6 +29,10 @@
         
     </div>
     
+    <div id="fullscreen">
+        <p>Teste FullScreen</p>
+    </div>
+    
 </template>
 
 <template name="carouselNews">
@@ -202,8 +206,9 @@
             <button class="btn btn-success" value="Take Event up"><i class="icon-thumbs-up icon-white"></i></button>
             <button class="btn btn-danger" value="Take Event down"><i class="icon-thumbs-down icon-white"></i></button>            
         </div>
-        <button id="btnfacebook" class="btn btn-primary" value="Take Event Facebook Mural">Colocar no Mural  <i id="iconfacebook" class="iconfacebook"></i>
-        </button>
+        <div class="addthis_toolbox addthis_default_style addthis_24x24_style" addthis:url="http://docs.meteor.com/#meteor_render" addthis:title="'Socrates e os seus problemas'" addthis:description="Teste descrição">
+       <a class="addthis_button_facebook"></a>
+        </div>
 </template>
 
 <template name="modalNews">
@@ -228,8 +233,13 @@
               <p>{{artigoBody}}</p>
             </div>
             <div class="modal-footer">
-              <button id="closeModal" class="btn" data-dismiss="modal">Close</button>
-              <button class="btn btn-primary">Save changes</button>
+             
+                
+                <button id="closeModal" class="btn btn-primary" data-dismiss="modal"><i class="icon-ok-sign icon-white"></i></button>
+                
+                <button class="btn"><i class="icon-circle-arrow-left"></i></button>
+                <button class="btn"><i class="icon-circle-arrow-right"></i></button>
+              
             </div>
     </div>
 </template>
