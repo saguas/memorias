@@ -2,18 +2,48 @@
 	<title>Memórias</title>
 	<link rel="canonical" href="http://www.example.com" />
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51c1aab421c835f0"></script>
-<meta property="og:url" content="http://www.chapman-freeborn.com/en/blog/" />
-<meta property="og:title" content="AddThis Tour" /> 
-<meta property="og:description" content="Watch the AddThis Tour video." />  
-<meta property="og:image" content="http://i2.ytimg.com/vi/1F7DKyFt5pY/default.jpg" /> 
-<meta property="og:video" content="http://www.youtube.com/v/1F7DKyFt5pY&fs=1" /> 
-<meta property="og:video:height" content="340" />  
-<meta property="og:video:width" content="560" />  
+
 </head> 
 <body>	
         
 </body>
 
+<template name="layoutReveal">
+      <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Memórias</a>
+        <ul class="nav">
+          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
+          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
+          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
+          <li><a href="/boguspath">Bogus Path</a></li>
+        </ul>
+      </div>
+    </div>
+      {{{yield}}}
+</template>
+
+<template name="layoutReveal2">
+ <div class="page-container authorized">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Memórias</a>
+        <ul class="nav">
+          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
+          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
+          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
+          <li><a href="/boguspath">Bogus Path</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="page">
+        {{{yield}}}
+      </div>
+    </div>
+  </div>
+</template>
 
 <template name="layout">
   <div class="page-container">

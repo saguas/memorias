@@ -32,6 +32,8 @@ routers = Meteor.pages({
     '/': { to: 'postsList', as: 'root', before: setLayout, nav: 'home' },
     //'/posts': { to: 'postIndex', as: 'postIndex', before: setLayout, nav: 'home' },
     '/memorias/:id/*/': { to: 'newsboard', as:'Documentos', before: [setLayout,setPost,getDoc,isAuthorized], nav: 'docs' },
+    '/memorias/reveal/': { to: 'docsSlideshow', as:'SlideShow', before: [mylayout,setPost,getDoc,isAuthorized], nav: 'slideshow' },
+    '/memorias/PageTransitions/': { to: 'pageSlideshow', as:'PageSlideShow', before: [mylayout,setPost,getDoc,isAuthorized], nav: 'pageSlideshow' },
     '/secret': { to: 'secret', before: [setLayout, authorizeSecret], nav: 'secret' },
     '/401': { to: 'unauthorized', before: setLayout },
     '*': { to: 'notFound', before: setLayout }
@@ -86,6 +88,11 @@ function isAuthorized (obj,page) {
       
     //console.log("post ",Session.get("post"));
   }
+
+function mylayout(context){
+ 
+    this.layout('layoutReveal');
+}
 
   function setLayout (context) {
     if (isAuthorized())
@@ -535,12 +542,13 @@ function addThisBar(){
 
 }
 
+/*
 document.addEventListener("keydown", function(e) {
   if (e.keyCode == 13) {
-    toggleFullScreen(document);
+    documentToggleFullScreen(document);
   }
 }, false);
-
+*/
 
 function documentToggleFullScreen(elem) {
   if (!elem.fullscreenElement &&    // alternative standard method
@@ -563,7 +571,7 @@ function documentToggleFullScreen(elem) {
   }
 }
 
-function toggleFullScreen(elem) {
+toggleFullScreen = function (elem) {
   if (!elem.fullscreenElement &&    // alternative standard method
       !elem.mozFullScreenElement && !elem.webkitFullscreenElement) {  // current working methods
       console.log("start fullscreeen!!! ", elem);
