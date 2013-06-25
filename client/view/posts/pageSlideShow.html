@@ -12,31 +12,19 @@
 </head>
 
 
-<Template name="pageSlideshow">
+<template name="pageSlideshow">
 
     {{#constant}}
         
         <div id="pt-main" class="pt-perspective">
-			<div class="pt-page pt-page-1">
-                <div class="container-fluid">
-                  <div class="row-fluid">
-                   <div class="span12">
-                   </div>
-                  </div>
-                  <div class="row-fluid">
-                    <div class="span12">
-                      <!--Sidebar content-->
-                        <h1><span>A collection of</span><strong>Page</strong> Transitions 1</h1>
+            {{> socialTopBar}}
+			<div class="pt-page pt-page-{{newPageNum}}">
+                <div class="page-container">
+                    <div class="container">
+                        
+                        {{> pages}}
                     </div>
-                  </div>
-                  <div class="row-fluid">
-                    <div class="span12">
-                      <!--Body content-->
-                      {{teste}}
-                    </div>
-                  </div>
                 </div>
-                
 			</div>
 			<div class="pt-page pt-page-2"><h1><span>A collection of</span><strong>Page</strong> Transitions 2</h1></div>
 			<div class="pt-page pt-page-3"><h1><span>A collection of</span><strong>Page</strong> Transitions 3</h1></div>
@@ -45,9 +33,41 @@
 			<div class="pt-page pt-page-6"><h1><span>A collection of</span><strong>Page</strong> Transitions 6</h1></div>
 		
 		</div>
-        <button id="fullscreen" class="btn">FullScreen</button>	
+        
     {{/constant}}
     
-</Template>
+</template>
+
+<template name="makePages">
+    {{> pages}}
+</template>
+
+<template name="pages">
+    <div class="page">
+          <div class="row">
+            <div class="span12">
+              <!--Sidebar content-->
+                <h1>{{artigoTitulo}}</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span12">
+              <!--Body content-->
+              <h4>{{artigoTitulo}}</h4>
+              <p>{{artigoBody}}</p>
+              {{teste}}
+            </div>
+          </div>
+          <div class="row">
+              <div class="">
+                  
+                 <button id="fullScreen" class="btn btn-primary" ><i class="icon-fullscreen icon-white"></i></button>
+                <button id="previoSlide" class="btn"><i class="icon-circle-arrow-left"></i></button>
+                <button id="nextSlide" class="btn"><i class="icon-circle-arrow-right"></i></button>
+              
+            </div>
+          </div>
+      </div>
+</template>
 
 

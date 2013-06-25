@@ -9,23 +9,16 @@
 </body>
 
 <template name="layoutReveal">
-      
-      {{{yield}}}
+    
+            {{>mynavbar}}
+       
+            {{{yield}}}
+    
 </template>
 
 <template name="layoutReveal2">
  <div class="page-container authorized">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="#">Memórias</a>
-        <ul class="nav">
-          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
-          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
-          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
-          <li><a href="/boguspath">Bogus Path</a></li>
-        </ul>
-      </div>
-    </div>
+     {{> mynavbar}}
 
     <div class="container">
       <div class="page">
@@ -50,29 +43,8 @@
 
 <template name="loggedInLayout">
   <div class="page-container authorized">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="#">Memórias</a>
-        <ul class="nav">
-          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
-          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
-          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
-          <li><a href="/boguspath">Bogus Path</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="containers">
-            <div class="slidedown">
-              <div class="nome">
-                <strong class="texto">Meu nome é: luis &nbsp;&nbsp;</strong>
-                <button id="btnpaineltop" class ="btn btn-primary btn-small"><strong>twitter</strong></button>
-                <button class="close">&times;</button>
-              </div>
-            </div>
-    </div>
-    <div class="btnSocial">
-        <button class="vertButton"><i class="icon-globe icon-white"></i></button>
-    </div>
+      {{> mynavbar}}
+      {{> socialTopBar}}
     <div class="container">
       <div class="page">
         {{{yield}}}
@@ -120,6 +92,39 @@
   </div>
 </template>
 
+
+<template name="mynavbar">
+    
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Memórias</a>
+        <ul class="nav">
+          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
+          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
+          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
+          <li><a href="/boguspath">Bogus Path</a></li>
+        </ul>
+      </div>
+    </div>
+
+</template>
+
+<template name="socialTopBar">
+    
+    <div class="containers">
+            <div class="slidedown">
+              <div class="nome">
+                <strong class="texto">Meu nome é: luis &nbsp;&nbsp;</strong>
+                <button id="btnpaineltop" class ="btn btn-primary btn-small"><strong>twitter</strong></button>
+                <button class="close">&times;</button>
+              </div>
+            </div>
+    </div>
+    <div class="btnSocial">
+        <button class="vertButton"><i class="icon-globe icon-white"></i></button>
+    </div>
+    
+</template>
 
 
 
