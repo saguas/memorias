@@ -31,22 +31,41 @@ Handlebars.registerHelper("docnome", function (nav, options) {
 routers = Meteor.pages({
     '/': { to: 'postsList', as: 'root', before: setLayout, nav: 'home' },
     //'/posts': { to: 'postIndex', as: 'postIndex', before: setLayout, nav: 'home' },
-    '/memorias/:id/*/': { to: 'newsboard', as:'Documentos', before: [setLayout,setPost,getDoc,isAuthorized], nav: 'docs' },
+    '/memorias/:id/*/': { to: 'newsboard', as:'Documentos', before: [checkIfRedirect,setLayout,setPost,getDoc,isAuthorized], nav: 'docs' },
     '/memorias/reveal/': { to: 'docsSlideshow', as:'SlideShow', before: [mylayout,setPost,getDoc,isAuthorized], nav: 'slideshow' },
-    '/memorias/PageTransitions/': { to: 'pageSlideshow', as:'PageSlideShow', before: [mylayout,setPost,getDoc,isAuthorized], nav: 'pageSlideshow' },
+    '/memorias/pageTransitions/': { to: 'pageSlideshow', as:'PageSlideShow', before: [mylayout,isAuthorized], nav: 'docs' },
     '/secret': { to: 'secret', before: [setLayout, authorizeSecret], nav: 'secret' },
     '/401': { to: 'unauthorized', before: setLayout },
     '*': { to: 'notFound', before: setLayout }
 });
 
+
+function checkIfRedirect(obj){
+    
+    //console.log("obj ",obj.context);
+    
+    var querystring = obj.context.querystring;
+    
+    var page = querystring.match(/page=\d+/);//procura por page
+
+    console.log("check redirect page %s querystring %s ", page,querystring);
+    
+    if (page){//se a querystring contiver page= então é para redirecionar 
+       //getObjId(obj);
+       this.redirect("/memorias/PageTransitions/?"+querystring, {orinQuerystring:obj.context.querystring,orinPath: obj.context.pathname, selected: undefined});
+    }
+    //if (querystring === "")
+}
 //routers.autoStart(); 
 
 //obtém o caminho dos documentos pretendidos e o nome do tema ou rubrica pretendida
-function getDoc(obj, page){
+function getDoc(obj){
     var path = obj.context.pathname;
+    var querystring = obj.context.querystring;
+    
     console.log("context ", obj ? obj : "");
     Session.set("loggedin", true);
-    Session.set("docs", obj? path : "");//caminho dos documentos pretendidos
+    Session.set("docs", obj? path + "?" + querystring : "");//caminho dos documentos pretendidos
     var lastname = _.compact(path.split("/"));
     //console.log("lastname ",_.unescape(_.last(lastname)));
     Session.set("docnome",unescape(_.last(lastname)));//nome da rubrica para este caminho
@@ -69,16 +88,20 @@ function isAuthorized (obj,page) {
   }
 
   function setPost (obj) {
-    var path = obj.context.path;
+    //var path = obj.context.path;
     
+      
+      //this.redirect("/memorias/PageTransitions/?page=2");
+      
       //var objid = getObjId(path);
     
-    var objid = getObjId(obj);
-    
+    //var objid = getObjId(obj);
+    getObjId(obj);
+      /*
     if(objid){
         Session.set("docid",objid._id);
         Session.set("tag",objid.tag);
-    }
+    }*/
     
      //verifyInput(null, null);
       Session.set("displaySearch", true);
@@ -89,9 +112,43 @@ function isAuthorized (obj,page) {
     //console.log("post ",Session.get("post"));
   }
 
-function mylayout(context){
- 
-    this.layout('layoutReveal');
+function mylayout(obj){
+    
+    var context = obj.context;
+    //var objid = getObjId(obj);
+    
+    //verifica se é um pedido legitimo de página. Ou é vindo de twitter ou outros ou da própria página
+    if (!context.state.orinPath || !context.querystring)
+        this.redirect("/");
+    else{  
+        console.log("context em mylayout %o docid %o ", context, Session.get("docid"));
+        
+        
+        
+        /*if(context.state._id){
+            Session.set("currentDocId",context.state._id);
+            //console.log("context em mylayout id ",context.state._id._str);
+        }*/
+        
+        this.layout('layoutReveal');
+        
+        context.pathname = context.state.orinPath;
+        context.querystring = context.state.orinQuerystring;
+        
+        var page = context.querystring.match(/page=\d+/);//procura por page
+        //var pagenum;
+        //console.log("page = ", page);
+        //if(page)
+        var pagenum = page[0].match(/\d+/);
+        
+        //console.log("pagenum = ", pagenum[0]);
+        Session.set("currentDocId", pagenum[0]);
+        
+        //console.log("obj mylayout ",obj);
+        
+        getObjId(obj);
+        getDoc(obj);
+    }
 }
 
   function setLayout (context) {
@@ -217,7 +274,7 @@ Template.mediaNews.destroyed = function(){
 }
 
 Template.mediaSub.events({
-   'click a[href="#myModal"]' : function(event, tmpl){
+   'click a[href="#myModal"]' : function(event){
        var id = $(event.target).attr("ids");
        console.log("click myModal %o id: %s", new Meteor.Collection.ObjectID(id), id);
        //var htmlModal = Template.modalNews(Posts.findOne({_id:(new Meteor.Collection.ObjectID(id))}));
@@ -230,7 +287,19 @@ Template.mediaSub.events({
        
        
        //event.preventDefault();
-   }
+   },
+    'click #btnsSlideShow' : function(event){
+        console.log("this? ",routers.path());
+        var path = routers.path();
+         //Meteor.go("/memorias/PageTransitions/" ,this);
+        var idx = path.lastIndexOf("/");//procura pela / antes do nome ou do from
+        var querystring = path.substr(idx+2);
+        var pathname = path.substring(0, idx+1);//tira as / do inicio e do fim;
+        console.log("qs %s pathname %s ", querystring, pathname);
+        //routers.redirect("/memorias/PageTransitions/?"+querystring, {orinQuerystring:querystring,orinPath: pathname});
+        querystring = (querystring !== "" ?  querystring + "&" + "page=" + 3 : "page=" + 3);
+        Meteor.go("/memorias/PageTransitions/?" + querystring, {orinQuerystring:querystring,orinPath: pathname, selected: this});
+    }
 });
     
 
@@ -447,10 +516,10 @@ function getObjId(obj){
     console.log("nome ", nome);
     if(querystring !== ""){
         
-        var querypath = querystring.substr(1);//tira o from ignorando o ?
-        var fromfacebookarr = querypath.match(/facebook/);//procura pela / antes do nome
-        var fromtwitterarr = querypath.match(/twitter/);//procura pela / antes do nome
-        var fromgooleplusarr = querypath.match(/googleplus/);//procura pela / antes do nome
+        //var querypath = querystring.substr(1);//tira o from ignorando o ?
+        var fromfacebookarr = querystring.match(/facebook/);//procura pela / antes do nome
+        var fromtwitterarr = querystring.match(/twitter/);//procura pela / antes do nome
+        var fromgooleplusarr = querystring.match(/googleplus/);//procura pela / antes do nome
 
         console.log("from ", fromfacebookarr);
         console.log("from ", fromtwitterarr);
@@ -471,6 +540,11 @@ function getObjId(obj){
     //if(obj)
     Session.set("profile",obj ? obj.profile : "");
     
+    if(obj){
+        Session.set("docid",obj._id);
+        Session.set("tag",obj.tag);
+    }
+    
     //console.log("real path %s id %o ", unescape(mypath), obj);//necessário fazer unescape
     
     return obj;
@@ -487,60 +561,6 @@ function stopTopBar(){
     console.log(".btnSocial", $(".btnSocial"));
     
     
-}
-
-
-function addThisBar(){
-
-            
-        addthis.bar.initialize({'default':{
-            "backgroundColor": "#000000",
-            "buttonColor": "#098DF4",
-            "textColor": "#FFFFFF",
-            "buttonTextColor": "#FFFFFF"
-           
-        },rules:[
-            {
-                "name": "Twitter",
-                "match": {
-                    "referringService": "twitter"
-                },
-                "message": "Se gosta desta página então:",
-                "action": {
-                    "type": "button",
-                    "text": "Tweet it!",
-                    "verb": "share",
-                    "service": "twitter"
-                }
-            },
-            {
-                "name": "Facebook",
-                "match": {
-                    "referringService": "facebook"
-                },
-                "message": "Dá a conhecer aos teus amigos sobre nós:",
-                "action": {
-                    "type": "button",
-                    "text": "Share on Facebook",
-                    "verb": "share",
-                    "service": "facebook"
-                }
-            },
-            {
-                "name": "Google",
-                "match": {
-                    "referrer": "google.com"
-                },
-                "message": "If you like this page, let Google know:",
-                "action": {
-                    "type": "button",
-                    "text": "+1",
-                    "verb": "share",
-                    "service": "google_plusone_share"
-                }
-            }
-        ]});
-
 }
 
 /*
