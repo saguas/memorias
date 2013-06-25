@@ -1,5 +1,5 @@
 var pageTrans;
-var fullScreenState = false;
+//var fullScreenState = false;
 
 Template.pageSlideshow.rendered = function(){
 
@@ -11,7 +11,7 @@ Template.pageSlideshow.rendered = function(){
           
         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
         
-            fullScreenState = !fullScreenState;
+            //fullScreenState = !fullScreenState;
             //if(fullScreenState){
                 //$(".pt-page").width('70%');
                 //$(".pt-page").height("70%");

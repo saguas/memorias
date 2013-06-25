@@ -149,7 +149,8 @@ Template.searchBox.helpers({
             var arrtags = [];
             var arrObjs = [];
         
-             Posts.find({id:Session.get("docid")}).forEach(function(obj){
+             //Posts.find({id:Session.get("docid")}).forEach(function(obj){
+             Posts.find().forEach(function(obj){
                     console.log("ids %s tag %s ",obj._id._str, obj.tag);
                  
                     arrObjs.push({tag:obj.tag, id:obj._id._str});// garda o objecto para relacionar a pesquisa com o tag
