@@ -15,9 +15,9 @@ Template.pageSlideshow.rendered = function(){
                 //$(".pt-page").width('70%');
                 //$(".pt-page").height("70%");
                 $(".pt-page").animate({
-                    left: '15%',
-                    height: "70%",
-                    width:'70%'
+                    left: '0',//'15%',
+                    height: "100%",
+                    width:'100%'
                   }, 800,"swing", function() {//easeOutBounce
                     // Animation complete.
                 });//css({top: 0, left: "15%"});
@@ -37,7 +37,7 @@ Template.pageSlideshow.events({
    
     'click #pt-main': function(event, tmpl) {
             
-            pageTrans.nextPage(32);     
+            pageTrans.nextPage(1);     
      },
     'click #fullscreen': function(event, tmpl) {
             //console.log("this ", this);
@@ -47,6 +47,7 @@ Template.pageSlideshow.events({
             $(".pt-page").width('100%');
             $(".pt-page").height("100%");
             $(".pt-page").css({top: 0, left: 0});
+            pageTrans.nextPage(2);
          
             //console.log("this ", $(".pt-page"));
             //}

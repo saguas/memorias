@@ -9,17 +9,7 @@
 </body>
 
 <template name="layoutReveal">
-      <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" href="#">Memórias</a>
-        <ul class="nav">
-          <li class="{{navClassFor 'home'}}"><a id="myhome" href="/">Home</a></li>
-          <li class="{{navClassFor 'secret'}}"><a id="secrete" href="{{secretPath}}">Secret</a></li>
-          <li class="{{navClassFor 'docs'}}"><a id="docs" href="{{docsHandle}}">{{docnome}}</a></li>
-          <li><a href="/boguspath">Bogus Path</a></li>
-        </ul>
-      </div>
-    </div>
+      
       {{{yield}}}
 </template>
 
