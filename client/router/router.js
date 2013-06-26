@@ -8,6 +8,7 @@ var addthis_share = {"data_track_addressbar":true, email_template:"memorias",
 Meteor.startup(function() {
     console.log("Mini Page router started");   
     Session.set("displayMedia","");
+    //$("body").on("unload", function(){return "";});
     
 });
 
@@ -97,7 +98,8 @@ function isAuthorized (obj,page) {
     
     //var objid = getObjId(obj);
     getObjId(obj);
-      /*
+   
+    /*
     if(objid){
         Session.set("docid",objid._id);
         Session.set("tag",objid.tag);
@@ -121,7 +123,7 @@ function mylayout(obj){
     if (!context.state.orinPath || !context.querystring)
         this.redirect("/");
     else{  
-        console.log("context em mylayout %o docid %o ", context, Session.get("docid"));
+        //console.log("context em mylayout %o docid %o ", context, Session.get("docid"));
         
         
         
@@ -130,7 +132,6 @@ function mylayout(obj){
             //console.log("context em mylayout id ",context.state._id._str);
         }*/
         
-        this.layout('layoutReveal');
         
         context.pathname = context.state.orinPath;
         context.querystring = context.state.orinQuerystring;
@@ -141,13 +142,15 @@ function mylayout(obj){
         //if(page)
         var pagenum = page[0].match(/\d+/);
         
-        //console.log("pagenum = ", pagenum[0]);
-        Session.set("currentDocId", pagenum[0]);
+        //console.log("pagenum = ", typeof pagenum[0]);
+        Session.set("currentDocId", parseInt(pagenum[0]));
         
         //console.log("obj mylayout ",obj);
         
         getObjId(obj);
         getDoc(obj);
+        
+        this.layout('layoutReveal');
     }
 }
 
@@ -434,6 +437,7 @@ Template.newsboard.rendered = function(){
         //addThisBar();
         //console.log("addthis bar ", addthis.bar);
         //$('.containers').prependTo("body");
+    console.log("newsboard.rendered");
     if(!self.handle){
             //console.log("newsboard handle ");
             
@@ -547,14 +551,15 @@ function getObjId(obj){
     
     //os documentos referentes a esta rubrica mypath/nome tem como campo id o id desta rubrica
     var obj = MapTree.findOne({path:unescape(mypath),nome:nome});
-    //if(obj)
-    Session.set("profile",obj ? obj.profile : "");
     
-    if(obj){
+     if(obj){
         Session.set("docid",obj._id);
         Session.set("tag",obj.tag);
     }
     
+    Session.set("profile",obj ? obj.profile : "");
+    
+        
     //console.log("real path %s id %o ", unescape(mypath), obj);//necessário fazer unescape
     
     return obj;

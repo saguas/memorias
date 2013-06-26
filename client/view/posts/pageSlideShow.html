@@ -7,8 +7,7 @@
     <script src="/jquery-ui/ui/jquery.ui.effect.js"></script>
     <script src="/PageTransitions/js/modernizr.custom.js"></script>
     <script src="/PageTransitions/js/jquery.dlmenu.js"></script>
-    <script src="/PageTransitions/js/pagetransitions.js"></script>
-
+   
 </head>
 
 
@@ -17,7 +16,7 @@
     {{#constant}}
         
         <div id="pt-main" class="pt-perspective">
-            {{> socialTopBar}}
+        {{#each docs}}
 			<div class="pt-page pt-page-{{newPageNum}}">
                 <div class="page-container">
                     <div class="container">
@@ -26,11 +25,7 @@
                     </div>
                 </div>
 			</div>
-			<div class="pt-page pt-page-2"><h1><span>A collection of</span><strong>Page</strong> Transitions 2</h1></div>
-			<div class="pt-page pt-page-3"><h1><span>A collection of</span><strong>Page</strong> Transitions 3</h1></div>
-			<div class="pt-page pt-page-4"><h1><span>A collection of</span><strong>Page</strong> Transitions 4</h1></div>
-			<div class="pt-page pt-page-5"><h1><span>A collection of</span><strong>Page</strong> Transitions 5</h1></div>
-			<div class="pt-page pt-page-6"><h1><span>A collection of</span><strong>Page</strong> Transitions 6</h1></div>
+        {{/each}}
 		
 		</div>
         
@@ -38,9 +33,6 @@
     
 </template>
 
-<template name="makePages">
-    {{> pages}}
-</template>
 
 <template name="pages">
     <div class="page">

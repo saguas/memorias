@@ -1,10 +1,12 @@
 var pageTrans;
 var barTimeout;
+var nextPage = 0;
 //var fullScreenState = false;
 
 Template.layoutReveal.rendered = function(){
     
-    var self = this
+    var self = this;
+    $("body").css({overflow: "hidden"});
 
     if(!self.handle){
             
@@ -16,6 +18,7 @@ Template.layoutReveal.rendered = function(){
 Template.layoutReveal.destroyed = function () {
   //this.bar;
   this.handle && this.handle.stop();
+  $("body").css({overflow: "auto"});
 }
 
 Template.layoutReveal.events({
@@ -53,34 +56,36 @@ Template.layoutReveal.events({
 
 Template.pageSlideshow.rendered = function(){
 
-      if(!this.started){
-        pageTrans = PageTransitions();
-        pageTrans.init();
-        this.started = true;
-        //Session.set("maxpages", 6);
-          
-        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
-        
-            //fullScreenState = !fullScreenState;
-            //if(fullScreenState){
-                //$(".pt-page").width('70%');
-                //$(".pt-page").height("70%");
-                /*$(".pt-page").animate({
-                    left: '0',//'15%',
-                    height: "100%",
-                    width:'100%'
-                  }, 800,"swing", function() {//easeOutBounce
-                    // Animation complete.
-                });*///css({top: 0, left: "15%"});
-                //console.log("fullscreen change");
-            //}
-        });
-      }
+        //nextPage = 0;
+      
+        console.log("pageSlideshow.rendered ");
+        if(!self.handle){
+            pageTrans = PageTransitions();
+            
+            self.handle = Deps.autorun(function (c) {
+                //console.log("antes de iniciar ", Session.get("docid"));
+                if(Session.get("postready"))
+                    pageTrans.init( Session.get("currentDocId"));
+                    /*Posts.find().forEach(function(post){
+                        console.log("post ", post);
+                    });*/
+                //console.log("currentDocId ",Posts.find());
+                
+            });
+        }    
+            
+        //pageTrans.init( Session.get("currentDocId"));
+             /* 
+                $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange',function(){
+                
+                    
+                });
+            */
     
 }
 
 Template.pageSlideshow.destroyed = function () {
-  
+    this.handle && this.handle.stop();
 }
 
 
@@ -93,15 +98,21 @@ Template.pages.helpers({
 
 Template.pageSlideshow.helpers({
     newPageNum: function(){
-        return 1; 
-    }
+        nextPage++;
+        //console.log("countPages ", countPages);
+        return nextPage; 
+    },
+    docs: function(){
+        console.log("dentro de docs ", Posts.find());
+        return Posts.find(); 
+   }
 });
 
 Template.pageSlideshow.events({
-    'click #pt-main': function(event, tmpl) {
+    /*'click #pt-main': function(event, tmpl) {
             
             pageTrans.nextPage(1,1);     
-     }
+     }*/
 });
 
 Template.pages.events({
@@ -113,7 +124,7 @@ Template.pages.events({
      },
     'click #previoSlide': function(event, tmpl) {
             
-            pageTrans.nextPage(1,-1);     
+            pageTrans.nextPage(2,-1);     
      },
     'click #fullScreen': function(event, tmpl) {
             //console.log("this ", this);
@@ -122,7 +133,7 @@ Template.pages.events({
         var elem = $("#pt-main")[0];
         console.log("elem ",elem);
         //if(!fullScreenState){
-        if(!document.webkitIsFullScreen){
+        if(!document.webkitIsFullScreen && !document.mozIsFullScreen && !document.IsFullScreen){
             console.log("entrar no fullscreen");
             toggleFullScreen(elem);
             $(".pt-page").width('100%');

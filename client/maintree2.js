@@ -11,15 +11,18 @@ Session.set("refresh", true);
 
 Deps.autorun(function () {
 
-    Meteor.subscribe("posts", Session.get("docid"));
+    var subpost = Meteor.subscribe("posts", Session.get("docid"));
     
-	if (sub.ready() ) {//pronto apenas quando estiver todos os dados no cliente
-        // Now do something every time the subscription is marked as ready
-        //console.log("maptree ready");
-        Session.set("maptree ready",true);
-    }
+    if(subpost.ready())
+        Session.set("postready",true);
+    
+        if (sub.ready() ) {//pronto apenas quando estiver todos os dados no cliente
+            // Now do something every time the subscription is marked as ready
+            //console.log("maptree ready");
+            Session.set("maptree ready",true);
+        }
 
-});
+    });
 
 /*
 Template.tablesNews.rendered = function () {
