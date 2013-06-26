@@ -1,5 +1,55 @@
 var pageTrans;
+var barTimeout;
 //var fullScreenState = false;
+
+Template.layoutReveal.rendered = function(){
+    
+    var self = this
+
+    if(!self.handle){
+            
+        self.handle = startSocialTopBar(self);  
+    }
+    
+}
+
+Template.layoutReveal.destroyed = function () {
+  //this.bar;
+  this.handle && this.handle.stop();
+}
+
+Template.layoutReveal.events({
+        'click .close': function(event, tmpl) {
+            $(".containers").slideUp(function(){
+                //$(".btnSocial").slideDown('slow'); 
+                $(".btnSocial").show('slow'); 
+           });
+            
+            Meteor.clearTimeout(barTimeout);
+        },
+    
+        'click .vertButton': function(event, tmpl) {
+            $(".btnSocial").hide('fast',function(){
+               
+                $(".containers").slideDown('slow', function(){
+                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5); 
+                 });
+           });
+        
+        },
+    
+        'mouseenter .containers': function(event, tmpl) {
+            console.log("mouseenter ");
+            Meteor.clearTimeout(barTimeout);
+        },
+    
+        'mouseleave .containers': function(event, tmpl) {
+            console.log("mouseleave ");
+            barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+        }
+    
+});
+
 
 Template.pageSlideshow.rendered = function(){
 
@@ -26,7 +76,14 @@ Template.pageSlideshow.rendered = function(){
             //}
         });
       }
+    
 }
+
+Template.pageSlideshow.destroyed = function () {
+  
+}
+
+
 
 Template.pages.helpers({
    teste: function(){

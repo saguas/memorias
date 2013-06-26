@@ -205,16 +205,17 @@ Template.searchBox.helpers({
     search: function(){
             var arrtags = [];
             var arrObjs = [];
+            var i = 0;//guarda a posição na base de dados e a posição no array
         
              //Posts.find({id:Session.get("docid")}).forEach(function(obj){
              Posts.find().forEach(function(obj){
-                    console.log("ids %s tag %s ",obj._id._str, obj.tag);
+                    //console.log("ids %s tag %s ",obj._id._str, obj.tag);
                  
-                    arrObjs.push({tag:obj.tag, id:obj._id._str});// garda o objecto para relacionar a pesquisa com o tag
+                    arrObjs.push({tag:obj.tag, id:obj._id._str, pos: ++i});// garda o objecto para relacionar a pesquisa com o tag
                     arrtags.push(obj.tag);//guarda as tags para o dropdown
              });
             Session.set("tagids", arrObjs);
-            console.log("tags ", EJSON.stringify(arrtags));
+            //console.log("tags ", EJSON.stringify(arrtags));
             return EJSON.stringify(arrtags);//arrtags;//Session.get("tag");
     }
 });
@@ -289,15 +290,18 @@ Template.mediaSub.events({
        //event.preventDefault();
    },
     'click #btnsSlideShow' : function(event){
-        console.log("this? ",routers.path());
+        //console.log("this? ", this);
         var path = routers.path();
          //Meteor.go("/memorias/PageTransitions/" ,this);
         var idx = path.lastIndexOf("/");//procura pela / antes do nome ou do from
         var querystring = path.substr(idx+2);
         var pathname = path.substring(0, idx+1);//tira as / do inicio e do fim;
-        console.log("qs %s pathname %s ", querystring, pathname);
+        //console.log("qs %s pathname %s ", querystring, pathname);
+        
+        var page = _.indexOf(_.pluck(Session.get("tagids"),"id"), this._id._str) + 1;
+        //console.log("page is ", page);
         //routers.redirect("/memorias/PageTransitions/?"+querystring, {orinQuerystring:querystring,orinPath: pathname});
-        querystring = (querystring !== "" ?  querystring + "&" + "page=" + 3 : "page=" + 3);
+        querystring = (querystring !== "" ?  querystring + "&" + "page=" + page : "page=" + page);
         Meteor.go("/memorias/PageTransitions/?" + querystring, {orinQuerystring:querystring,orinPath: pathname, selected: this});
     }
 });
@@ -433,28 +437,8 @@ Template.newsboard.rendered = function(){
     if(!self.handle){
             //console.log("newsboard handle ");
             
-            self.handle = Deps.autorun(function (c) {
-                
-                if(Session.equals("from","facebook")){
-                    $(".containers").slideDown();   
-                   // $(".btnSocial").slideUp(); 
-                    c.stop();
-                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
-                }else if(Session.equals("from","twitter")){
-                    $(".containers").slideDown();   
-                    //$(".btnSocial").slideUp(); 
-                    c.stop();
-                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
-                }else if(Session.equals("from","googleplus")){
-                    $(".containers").slideDown();   
-                    //$(".btnSocial").slideUp(); 
-                    c.stop();
-                    barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
-                }
-                
-                
-            });   
-        }
+        self.handle = startSocialTopBar(self);  
+    }
     
         if (document.referrer && document.referrer != "")
             console.log('Thanks for visiting this site from ' + document.referrer);
@@ -498,6 +482,32 @@ Template.footerLayout.rendered = function () {
     //console.log("addthis ", addthis);
 }
 
+startSocialTopBar = function(self){
+    
+            //console.log("newsboard handle ");
+            
+       return Deps.autorun(function (c) {
+            
+            if(Session.equals("from","facebook")){
+                $(".containers").slideDown();   
+               // $(".btnSocial").slideUp(); 
+                c.stop();
+                barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+            }else if(Session.equals("from","twitter")){
+                $(".containers").slideDown();   
+                //$(".btnSocial").slideUp(); 
+                c.stop();
+                barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+            }else if(Session.equals("from","googleplus")){
+                $(".containers").slideDown();   
+                //$(".btnSocial").slideUp(); 
+                c.stop();
+                barTimeout = Meteor.setTimeout(stopTopBar,1000*5);
+            }
+            
+            
+        });          
+}
 
 //obtém o documento na base de dados referente ao caminho indicado
 function getObjId(obj){
@@ -551,7 +561,7 @@ function getObjId(obj){
     
 }
 
-function stopTopBar(){
+stopTopBar = function (){
 
     $(".containers").slideUp(function(){
         //$(".btnSocial").slideDown("slow");   
