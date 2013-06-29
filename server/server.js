@@ -4,6 +4,25 @@ Meteor.publish("posts", function (postid) {
   return Posts.find({id:postid});
 });
 
+
+Posts.allow({
+   insert: function(userId, doc){
+         return !!userId;
+   }
+});
+
+News.allow({
+   insert: function(userId, doc){
+         return !!userId;
+   }
+});
+
+MapTree.allow({
+   insert: function(userId, doc){
+         return !!userId;
+   }
+});
+
 Meteor.publish("news", function () {
 
   return News.find({});
